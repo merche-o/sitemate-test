@@ -21,7 +21,6 @@ export const fetchArticles = query => {
   return dispatch => {
     dispatch(fetchArticlesRequest());
 
-    const apiKey = 'YOUR_API_KEY';
     const url = `${BASE_API_URL}/everything?q=${encodeURIComponent(
       query,
     )}&apiKey=${API_KEY}`;
