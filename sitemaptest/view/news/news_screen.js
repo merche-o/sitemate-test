@@ -4,8 +4,8 @@ import {Provider} from 'react-redux';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import store from './redux/store/news';
-import NewsList from './news_list';
 import NewsDetail from './news_details';
+import {NewsList} from './news_list';
 const Stack = createStackNavigator();
 
 const NewsScreen = () => {
