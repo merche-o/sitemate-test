@@ -5,10 +5,10 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import store from './redux/store/news';
 import NewsList from './news_list';
-
+import NewsDetail from './news_details';
 const Stack = createStackNavigator();
 
-const App = () => {
+const NewsScreen = () => {
   useEffect(() => {
     console.log('NewsScreen rendered');
   });
@@ -21,13 +21,15 @@ const App = () => {
             component={NewsList}
             options={{title: 'News'}}
           />
-          {/* <Stack.Screen
-            name="NewsDetials"
+          <Stack.Screen
+            name="NewsDetails"
             component={NewsDetail}
             options={{title: 'News Details'}}
-          /> */}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
   );
 };
+
+export default NewsScreen;

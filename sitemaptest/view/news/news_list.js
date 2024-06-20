@@ -1,53 +1,76 @@
-import React, {useEffect} from 'react';
+import React, {useState} from 'react';
 import {
   View,
-  Text,
-  FlatList,
-  StyleSheet,
-  TouchableOpacity,
   TextInput,
+  Button,
+  FlatList,
+  Text,
+  StyleSheet,
 } from 'react-native';
-import {Provider, useDispatch, useSelector} from 'react-redux';
-import store from './redux/store/news';
-import {fetchNews, setSearchQuery} from './redux/thunk/news';
+import {useDispatch, useSelector} from 'react-redux';
+import {fetchArticles} from './actions/articlesActions';
+import {ActivityIndicator} from 'react-native';
 
-const styles = StyleSheet.create({});
-
-const NewsList = ({navigation}) => {
-  useEffect(() => {
-    console.log('NewsList rendered');
-  });
+const NewsList = () => {
+  const [query, setQuery] = useState('');
   const dispatch = useDispatch();
-  const news = useSelector(state => state.posts);
-  const searchQuery = useSelector(state => state.searchQuery);
-  useEffect(() => {
-    dispatch(fetchNews());
-  }, [dispatch]);
+  const articles = useSelector(state => state.articles.articles);
+  const loading = useSelector(state => state.articles.loading);
+  const error = useSelector(state => state.articles.error);
 
-  const filteredPosts = news.filter(post =>
-    post.title.toLowerCase().includes(searchQuery.toLowerCase()),
-  );
+  const handleSearch = () => {
+    dispatch(fetchArticles(query));
+  };
+
   return (
     <View style={styles.container}>
       <TextInput
-        style={styles.searchBar}
-        placeholder="Search by title..."
-        value={searchQuery}
-        onChangeText={text => dispatch(setSearchQuery(text))}
+        style={styles.input}
+        placeholder="Search for articles..."
+        value={query}
+        onChangeText={setQuery}
       />
+      <Button title="Search" onPress={handleSearch} />
+      {loading && <ActivityIndicator />}
+      {error && <Text>Error: {error}</Text>}
       <FlatList
-        data={news}
-        keyExtractor={item => item.id.toString()}
+        data={articles}
+        keyExtractor={item => item.url}
         renderItem={({item}) => (
-          <TouchableOpacity
-            onPress={() => navigation.navigate('NewsDetail', {news: item})}>
-            <View style={styles.item}>
-              <Text style={styles.title}>{item.title}</Text>
-              <Text style={styles.date}>{item.date}</Text>
-            </View>
-          </TouchableOpacity>
+          <View style={styles.item}>
+            <Text style={styles.title}>{item.title}</Text>
+            <Text>{item.description}</Text>
+            <Text>Source: {item.source}</Text>
+            <Text>Author: {item.author}</Text>
+            <Text>Published At: {item.publishedAt.toDateString()}</Text>
+          </View>
         )}
       />
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: '#fff',
+  },
+  input: {
+    height: 40,
+    borderColor: '#ccc',
+    borderWidth: 1,
+    marginBottom: 10,
+    paddingHorizontal: 10,
+  },
+  item: {
+    padding: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
+  },
+  title: {
+    fontWeight: 'bold',
+  },
+});
+
+export default NewsList;
