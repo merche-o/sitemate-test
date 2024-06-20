@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, Text, Image, StyleSheet, ScrollView} from 'react-native';
-
+import {newsDetailsStyle as styles} from '../../style/news_details';
 const NewsDetail = ({route}) => {
   const {article} = route.params;
 
@@ -20,45 +20,5 @@ const NewsDetail = ({route}) => {
     </ScrollView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-    backgroundColor: '#fff',
-  },
-  image: {
-    width: '100%',
-    height: 200,
-    marginBottom: 20,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
-  source: {
-    fontSize: 16,
-    color: '#555',
-    marginBottom: 5,
-  },
-  author: {
-    fontSize: 16,
-    color: '#555',
-    marginBottom: 5,
-  },
-  date: {
-    fontSize: 16,
-    color: '#555',
-    marginBottom: 20,
-  },
-  description: {
-    fontSize: 18,
-    marginBottom: 10,
-  },
-  content: {
-    fontSize: 16,
-  },
-});
 
 export default NewsDetail;
